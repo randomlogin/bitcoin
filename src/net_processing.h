@@ -50,6 +50,14 @@ static const unsigned int MAX_CMPCTBLOCKS_INFLIGHT_PER_BLOCK = 3;
 static const unsigned int MAX_HEADERS_RESULTS = 2000;
 /** The compactblocks version we support. See BIP 152. */
 static constexpr uint64_t CMPCTBLOCKS_VERSION{2};
+/** A lookup for a block that is at most this many blocks ahead of the filter
+ *  index's last processed block may be racing with the validation-interface
+ *  BlockConnected callback that writes the filter, rather than reflecting a
+ *  real indexing/DB issue. */
+static constexpr int CF_MAX_BLOCKS_AHEAD_RACE_WAIT{2};
+/** Maximum number of getcfilters requests a peer may have deferred at once
+ *  because they raced the filter index (see PendingCFilterRequest). */
+static constexpr size_t MAX_PENDING_CFILTER_REQUESTS{10};
 
 struct CNodeStateStats {
     int nSyncHeight = -1;

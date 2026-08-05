@@ -31,9 +31,7 @@
 #include <validation.h>
 #include <validationinterface.h>
 
-#include <compare>
 #include <cstdint>
-#include <functional>
 #include <memory>
 #include <optional>
 #include <stdexcept>
