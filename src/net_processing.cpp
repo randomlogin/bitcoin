@@ -642,6 +642,7 @@ public:
         m_best_block_time = time;
     };
     void UnitTestMisbehaving(NodeId peer_id) override EXCLUSIVE_LOCKS_REQUIRED(!m_peer_mutex) { Misbehaving(*Assert(GetPeerRef(peer_id)), ""); };
+    bool TestOnlyCFilterIndexMayBeRacing(BlockFilterType filter_type, const uint256& stop_hash) override { return CFilterIndexMayBeRacing(filter_type, stop_hash); };
     void UpdateLastBlockAnnounceTime(NodeId node, int64_t time_in_seconds) override;
     ServiceFlags GetDesirableServiceFlags(ServiceFlags services) const override;
 

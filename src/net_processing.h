@@ -32,6 +32,7 @@ class CBlockIndex;
 class CScheduler;
 class DataStream;
 class uint256;
+enum class BlockFilterType : uint8_t;
 
 namespace node {
 class Warnings;
@@ -174,6 +175,9 @@ public:
 
     /* Public for unit testing. */
     virtual void UnitTestMisbehaving(NodeId peer_id) = 0;
+
+    /* Public for benchmarking. */
+    virtual bool TestOnlyCFilterIndexMayBeRacing(BlockFilterType filter_type, const uint256& stop_hash) = 0;
 
     /**
      * Evict extra outbound peers. If we think our tip may be stale, connect to an extra outbound.

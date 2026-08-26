@@ -25,11 +25,13 @@
 #include <util/syserror.h>
 
 #include <cerrno>
+#include <chrono>
 #include <exception>
 #include <map>
 #include <optional>
 #include <stdexcept>
 #include <string>
+#include <thread>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -258,6 +260,13 @@ std::optional<uint256> BlockFilterIndex::ReadFilterHeader(int height, const uint
 
 bool BlockFilterIndex::CustomAppend(const interfaces::BlockInfo& block)
 {
+    // Throwaway test-only hook, not part of the actual PR: widen the window
+    // during which CFilterIndexMayBeRacing() sees this index as lagging the
+    // tip, so parked requests can be reliably sustained for benchmarking.
+    if (const int64_t delay_ms = gArgs.GetIntArg("-testfilterindexdelay", 0); delay_ms > 0) {
+        std::this_thread::sleep_for(std::chrono::milliseconds{delay_ms});
+    }
+
     BlockFilter filter(m_filter_type, *Assert(block.data), *Assert(block.undo_data));
     const uint256& header = filter.ComputeHeader(m_last_header);
     bool res = Write(filter, block.height, header);

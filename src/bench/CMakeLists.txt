@@ -14,6 +14,7 @@ add_executable(bench_bitcoin
   block_assemble.cpp
   blockencodings.cpp
   ccoins_caching.cpp
+  cfilter_index_racing.cpp
   chacha20.cpp
   checkblock.cpp
   checkblockindex.cpp
